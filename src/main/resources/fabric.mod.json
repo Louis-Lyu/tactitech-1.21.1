@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "tactitech",
+	"version": "${version}",
+	"name": "Tactitech",
+	"description": "Create inspired Tech Mod",
+	"authors": [
+		"LemoonMC!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/tactitech/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.lemoon.tactitech.Tactitech"
+		],
+		"fabric-datagen": [
+			"net.lemoon.tactitech.TactitechDataGenerator"
+		],
+		"client": [
+			"net.lemoon.tactitech.TactitechClient"
+		]
+	},
+	"mixins": [
+		"tactitech.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
