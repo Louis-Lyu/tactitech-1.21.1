@@ -1,0 +1,16 @@
+{
+  "item.tactitech.gas_canisters": "Gas Canisters",
+
+  "block.tactitech.solidified_ammonia": "Solidified Ammonia",
+  "block.tactitech.molecular_compounder": "Molecular Compounder",
+
+  "itemgroup.tactitech.tactitech_blocks": "Tactitech Blocks",
+  "itemgroup.tactitech.tactitech_items": "Tactitech Items",
+  "block.tactitech.thermo_generator": "Thermo Generator",
+  "block.tactitech.basic_ammonia_extractor": "Basic Ammonia Extractor ",
+
+
+  "tactitech.tooltip.liquid.amount.with.capacity": "%s / %s mB",
+  "tactitech.tooltip.liquid.amount": "%s mB"
+
+}

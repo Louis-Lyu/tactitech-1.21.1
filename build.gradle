@@ -11,6 +11,24 @@ base {
 }
 
 repositories {
+
+//	maven {
+//		url = 'https://maven.architectury.dev'
+//	}
+
+//	maven{
+//		url = '
+//	}
+
+	maven { url "https://maven.shedaniel.me" }
+	maven {
+		url "https://cursemaven.com"
+		content {
+			includeGroup "curse.maven"
+		}
+	}
+	// Replace with your Maven repository URL
+
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
@@ -32,8 +50,22 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
+
+
+	modApi "dev.architectury:architectury-fabric:13.0.6"
+	modApi "me.shedaniel.cloth:cloth-config-fabric:15.0.140"
+
+	include modApi('teamreborn:energy:4.1.0') {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+
+	modImplementation "curse.maven:techreborn-233564:5939581"
+	modImplementation "curse.maven:reborncore-237903:5939580"
+
+
 }
+
+
 
 processResources {
 	inputs.property "version", project.version
