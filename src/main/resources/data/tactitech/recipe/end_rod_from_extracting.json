@@ -1,0 +1,9 @@
+{
+  "type": "tactitech:extracting",
+  "ingredient": {
+    "item": "minecraft:stick"
+  },
+  "result": {
+    "id": "minecraft:end_rod"
+  }
+}
