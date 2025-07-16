@@ -111,10 +111,10 @@ public class FluidStackRenderer {
 
         long amount = fluidStorage.amount;
         if (tooltipMode == TooltipMode.SHOW_AMOUNT_AND_CAPACITY) {
-            MutableText amountString = Text.translatable("mccourse.tooltip.liquid.amount.with.capacity", nf.format(amount), nf.format(capacityMb));
+            MutableText amountString = Text.translatable("tactitech.tooltip.liquid.amount.with.capacity", nf.format(amount), nf.format(capacityMb));
             tooltip.add(amountString.fillStyle(Style.EMPTY.withColor(Formatting.DARK_GRAY)));
         } else if (tooltipMode == TooltipMode.SHOW_AMOUNT) {
-            MutableText amountString = Text.translatable("mccourse.tooltip.liquid.amount", nf.format(amount));
+            MutableText amountString = Text.translatable("tactitech.tooltip.liquid.amount", nf.format(amount));
             tooltip.add(amountString.fillStyle(Style.EMPTY.withColor(Formatting.DARK_GRAY)));
         }
 

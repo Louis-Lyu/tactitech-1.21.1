@@ -2,10 +2,7 @@ package net.lemoon.tactitech.block;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.lemoon.tactitech.Tactitech;
-import net.lemoon.tactitech.block.custom.BasicAmmoniaExtractor;
-import net.lemoon.tactitech.block.custom.CoalGeneratorBlock;
-import net.lemoon.tactitech.block.custom.MolecularCompounder;
-import net.lemoon.tactitech.block.custom.ThermoGenerator;
+import net.lemoon.tactitech.block.custom.*;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.FluidBlock;
@@ -23,7 +20,8 @@ import net.minecraft.util.Identifier;
 
 public class ModBlocks {
     public static final Block SOLIDIFIED_AMMONIA = registerBlock("solidified_ammonia",
-            new Block(AbstractBlock.Settings.create().strength(3f,3f)
+            new Block(AbstractBlock.Settings.create()
+                    .strength(3f,3f)
                     .requiresTool()
                     .sounds(BlockSoundGroup.STONE)
             ));
@@ -56,6 +54,13 @@ public class ModBlocks {
                     .sounds(BlockSoundGroup.METAL)
                     .nonOpaque()
             ));
+    public static final Block TANK_BLOCK = registerBlock("tank_block",
+            new TankBlock(AbstractBlock.Settings.create()
+                    .strength(4f,5f)
+                    .requiresTool()
+                    .sounds(BlockSoundGroup.METAL)
+                    .nonOpaque()
+            ));
 
 
     private static Block registerBlock(String name, Block block){
@@ -77,6 +82,7 @@ public class ModBlocks {
             entries.add(ModBlocks.THERMO_GENERATOR);
             entries.add(ModBlocks.BASIC_AMMONIA_EXTRACTOR);
             entries.add(ModBlocks.COAL_GENERATOR);
+            entries.add(ModBlocks.TANK_BLOCK);
         });
     }
 }

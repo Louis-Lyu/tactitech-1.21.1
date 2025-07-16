@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "alexiil.mc.mod.pipes.mixin.impl",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "BakedQuadAccessor",
+    "BufferBuilderAccessor",
+    "RenderLayerAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

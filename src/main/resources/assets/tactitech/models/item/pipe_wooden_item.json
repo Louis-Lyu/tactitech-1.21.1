@@ -1,0 +1,6 @@
+{
+    "parent": "tactitech:item/pipe",
+    "textures": {
+        "main": "tactitech:block/pipe_wooden_item_clear"
+    }
+}

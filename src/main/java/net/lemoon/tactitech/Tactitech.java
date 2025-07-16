@@ -4,15 +4,20 @@ import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.lemoon.tactitech.block.ModBlocks;
+import net.lemoon.tactitech.block.SimplePipeBlocks;
 import net.lemoon.tactitech.block.entity.ModBlockEntities;
 import net.lemoon.tactitech.block.entity.custom.BasicAmmoniaExtractorEntity;
 import net.lemoon.tactitech.fluid.ModFluids;
 import net.lemoon.tactitech.item.ModItemGroups;
 import net.lemoon.tactitech.item.ModItems;
+import net.lemoon.tactitech.item.SimplePipeItems;
+import net.lemoon.tactitech.part.SimplePipeParts;
+import net.lemoon.tactitech.pipe.PartSpPipe;
 import net.lemoon.tactitech.recipe.ModRecipes;
 import net.lemoon.tactitech.screen.ModScreenHandlers;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registry;
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +37,13 @@ public class Tactitech implements ModInitializer {
 			ModScreenHandlers.registerScreenHandlers();
 			ModRecipes.registerRecipes();
 
+			SimplePipeParts.load();
+			SimplePipeBlocks.load();
+			SimplePipeItems.load();
+			PartSpPipe.load();
+
+
+
 
 
 //			BlockEntityType<BasicAmmoniaExtractorEntity> MACHINE = Optional.empty();;
@@ -46,4 +58,7 @@ public class Tactitech implements ModInitializer {
 //			}, MACHINE);
 
 		}
+	public static Identifier id(String path) {
+		return Identifier.of(MOD_ID, path);
+	}
 	}

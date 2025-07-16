@@ -43,17 +43,17 @@ public class ModFluids {
                 Identifier.of(Tactitech.MOD_ID, "irradiated_ammonia_still"), new IrradiatedAmmoniaFluid.Still());
 
         FLOWING_IRRADIATED_AMMONIA = Registry.register(Registries.FLUID,
-                Identifier.of(Tactitech.MOD_ID, "gedrited_water_flow"), new IrradiatedAmmoniaFluid.Flowing());
+                Identifier.of(Tactitech.MOD_ID, "irradiated_ammonia_flowing"), new IrradiatedAmmoniaFluid.Flowing());
 
         IRRADIATED_AMMONIA_BLOCK = Registry.register(Registries.BLOCK,
-                Identifier.of(Tactitech.MOD_ID, "gedrited_water_block"),
+                Identifier.of(Tactitech.MOD_ID, "ammonia_water_block"),
                 new FluidBlock(ModFluids.IRRADIATED_AMMONIA, FabricBlockSettings
                         .copy(Blocks.WATER)
                         .mapColor(MapColor.DULL_PINK)) {});
 
 
        IRRADIATED_AMMONIA_BUCKET = Registry.register(Registries.ITEM,
-                Identifier.of(Tactitech.MOD_ID, "gedrited_water_bucket"), new BucketItem(ModFluids.IRRADIATED_AMMONIA, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1)));
+                Identifier.of(Tactitech.MOD_ID, "ammonia_water_bucket"), new BucketItem(ModFluids.IRRADIATED_AMMONIA, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1)));
     }
 
     static {

@@ -1,0 +1,6 @@
+{
+    "parent": "tactitech:item/pipe",
+    "textures": {
+        "all": "tactitech:block/pipe_clay_fluid"
+    }
+}

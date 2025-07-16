@@ -125,7 +125,7 @@ public class BasicAmmoniaExtractor extends BlockWithEntity {
             world.playSound(xPos, yPos, zPos, SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundCategory.BLOCKS, 1.0f, 1.0f, false);
         }
 
-        Direction direction = state.get(FACING);
+       Direction direction = state.get(FACING);
         Direction.Axis axis = direction.getAxis();
 
         double defaultOffset = random.nextDouble() * 0.6 - 0.3;

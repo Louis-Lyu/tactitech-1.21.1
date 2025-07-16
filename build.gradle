@@ -12,20 +12,19 @@ base {
 
 repositories {
 
-//	maven {
-//		url = 'https://maven.architectury.dev'
-//	}
-
-//	maven{
-//		url = '
-//	}
-
+	maven{
+		url "https://maven.fabricmc.net/fabric-loom/fabric-loom.gradle.plugin/1.10-SNAPSHOT/"
+	}
 	maven { url "https://maven.shedaniel.me" }
 	maven {
 		url "https://cursemaven.com"
 		content {
 			includeGroup "curse.maven"
 		}
+	}
+
+	mavenLocal() {
+		maven { name = "BuildCraft"; url = "https://mod-buildcraft.com/maven" }
 	}
 	// Replace with your Maven repository URL
 
@@ -61,6 +60,17 @@ dependencies {
 
 	modImplementation "curse.maven:techreborn-233564:5939581"
 	modImplementation "curse.maven:reborncore-237903:5939580"
+
+	modApi "alexiil.mc.lib:libblockattributes-all:$libblockattributes_version"
+	modApi "alexiil.mc.lib:libnetworkstack-base:$libnetworkstack_version"
+	modApi "alexiil.mc.lib:libmultipart-base:$libmultipart_version"
+	modApi "alexiil.mc.lib:libmultipart-compat:$libmultipart_version"
+
+	include "alexiil.mc.lib:libblockattributes-all:$libblockattributes_version"
+	include "alexiil.mc.lib:libnetworkstack-base:$libnetworkstack_version"
+	include "alexiil.mc.lib:libmultipart-base:$libmultipart_version"
+	include "alexiil.mc.lib:libmultipart-compat:$libmultipart_version"
+
 
 
 }

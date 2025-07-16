@@ -1,5 +1,6 @@
 package net.lemoon.tactitech.block.entity;
 
+import dev.architectury.fluid.FluidStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
@@ -113,6 +114,11 @@ public interface ImplementedInventory extends SidedInventory {
      *
      * @return the inventory size
      */
+
+    default boolean canInsertFluid(int slot, FluidStack stack, @Nullable Direction side) {
+        return true;
+    }
+
     @Override
     default int size() {
         return getItems().size();

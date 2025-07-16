@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "tactitech:block/basic_ammonia_extractor"
+    "all": "tactitech:block/solidified_ammonia"
   }
 }

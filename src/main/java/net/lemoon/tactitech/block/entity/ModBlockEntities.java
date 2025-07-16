@@ -2,10 +2,7 @@ package net.lemoon.tactitech.block.entity;
 
 import net.lemoon.tactitech.Tactitech;
 import net.lemoon.tactitech.block.ModBlocks;
-import net.lemoon.tactitech.block.entity.custom.BasicAmmoniaExtractorEntity;
-import net.lemoon.tactitech.block.entity.custom.CoalGeneratorBlockEntity;
-import net.lemoon.tactitech.block.entity.custom.MolecularCompounderEntity;
-import net.lemoon.tactitech.block.entity.custom.ThermoGeneratorEntity;
+import net.lemoon.tactitech.block.entity.custom.*;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -28,6 +25,11 @@ public class ModBlockEntities {
     public static final BlockEntityType<CoalGeneratorBlockEntity> COAL_GENERATOR_BE =
             Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(Tactitech.MOD_ID, "coal_generator_be"),
                     BlockEntityType.Builder.create(CoalGeneratorBlockEntity::new, ModBlocks.COAL_GENERATOR).build(null));
+
+    public static final BlockEntityType<TankBlockEntity> TANK_BE =
+            Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(Tactitech.MOD_ID, "tank_be"),
+                    BlockEntityType.Builder.create(TankBlockEntity::new, ModBlocks.TANK_BLOCK).build(null));
+
 
 
     public static void registerBlockEntities() {

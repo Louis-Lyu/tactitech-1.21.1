@@ -25,12 +25,12 @@ public class BasicAmmoniaExtractorScreenHandler extends ScreenHandler {
     public BasicAmmoniaExtractorScreenHandler(int syncId, PlayerInventory playerInventory,
                                               BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
         super(ModScreenHandlers.BASIC_AMMONIA_EXTRACTOR_SCREEN_HANDLER, syncId);
-        checkSize((Inventory) blockEntity, 4);
+        checkSize((Inventory) blockEntity, 2);
         this.inventory = (Inventory) blockEntity;
         this.propertyDelegate = arrayPropertyDelegate;
         this.blockEntity = ((BasicAmmoniaExtractorEntity) blockEntity);
 
-        this.addSlot(new Slot(inventory, 0, 8, 62));
+//        this.addSlot(new Slot(inventory, 0, 8, 62));
         this.addSlot(new Slot(inventory, 1, 54, 34));
         this.addSlot(new Slot(inventory, 2, 104, 34));
         this.addSlot(new Slot(inventory, 3, 152, 62));

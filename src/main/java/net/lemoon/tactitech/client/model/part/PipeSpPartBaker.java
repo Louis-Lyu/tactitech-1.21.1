@@ -1,0 +1,37 @@
+package net.lemoon.tactitech.client.model.part;
+
+import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+
+import net.minecraft.client.render.model.BakedQuad;
+
+import net.lemoon.tactitech.client.model.PipeBaseModelGenStandard;
+import net.lemoon.tactitech.client.model.SpriteSupplier;
+
+import alexiil.mc.lib.multipart.api.render.PartModelBaker;
+import alexiil.mc.lib.multipart.api.render.PartRenderContext;
+
+public class PipeSpPartBaker implements PartModelBaker<PipeSpPartKey> {
+
+    private final SpriteSupplier sprites;
+
+    public PipeSpPartBaker(SpriteSupplier sprites) {
+        this.sprites = sprites;
+    }
+
+    @Override
+    public void emitQuads(PipeSpPartKey key, PartRenderContext ctx) {
+        QuadEmitter emitter = ctx.getEmitter();
+        RenderMaterial cutout = RendererAccess.INSTANCE.getRenderer().materialFinder()//
+            .disableAo(0, true)//
+            .blendMode(0, BlendMode.CUTOUT)//
+            .find();
+
+        for (BakedQuad quad : PipeBaseModelGenStandard.generateCutout(sprites, key)) {
+            emitter.fromVanilla(quad, cutout, null);
+            emitter.emit();
+        }
+    }
+}

@@ -3,10 +3,7 @@ package net.lemoon.tactitech.screen;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.lemoon.tactitech.Tactitech;
 import net.lemoon.tactitech.block.custom.ThermoGenerator;
-import net.lemoon.tactitech.screen.custom.BasicAmmoniaExtractorScreenHandler;
-import net.lemoon.tactitech.screen.custom.CoalGeneratorScreenHandler;
-import net.lemoon.tactitech.screen.custom.MolecularCompounderScreenHandler;
-import net.lemoon.tactitech.screen.custom.ThermoGeneratorScreenHandler;
+import net.lemoon.tactitech.screen.custom.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.screen.ScreenHandlerType;
@@ -31,6 +28,11 @@ public class ModScreenHandlers {
     public static final ScreenHandlerType<CoalGeneratorScreenHandler> COAL_GENERATOR_SCREEN_HANDLER =
             Registry.register(Registries.SCREEN_HANDLER, Identifier.of(Tactitech.MOD_ID, "coal_generator_screen_handler"),
                     new ExtendedScreenHandlerType<>(CoalGeneratorScreenHandler::new, BlockPos.PACKET_CODEC));
+
+    public static final ScreenHandlerType<TankScreenHandler> TANK_SCREEN_HANDLER =
+            Registry.register(Registries.SCREEN_HANDLER, Identifier.of(Tactitech.MOD_ID, "tank_screen_handler"),
+                    new ExtendedScreenHandlerType<>(TankScreenHandler::new, BlockPos.PACKET_CODEC));
+
 
     public static void registerScreenHandlers() {
         Tactitech.LOGGER.info("Registering Screen Handlers for " + Tactitech.MOD_ID);

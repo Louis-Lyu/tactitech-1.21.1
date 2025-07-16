@@ -25,7 +25,7 @@ public class BasicAmmoniaExtractorScreen extends HandledScreen<BasicAmmoniaExtra
     private static final Identifier EXTRACTOR_TEXTURE =
             Identifier.of("textures/block/amethyst_cluster.png");
     private EnergyInfoArea energyInfoArea;
-    private FluidStackRenderer fluidStackRenderer;
+//    private FluidStackRenderer fluidStackRenderer;
 
     public BasicAmmoniaExtractorScreen(BasicAmmoniaExtractorScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -40,12 +40,12 @@ public class BasicAmmoniaExtractorScreen extends HandledScreen<BasicAmmoniaExtra
         playerInventoryTitleY = 1000;
 
         assignEnergyInfoArea();
-        assignFluidStackRenderer();
+//        assignFluidStackRenderer();
     }
 
-    private void assignFluidStackRenderer() {
-        fluidStackRenderer = new FluidStackRenderer((FluidConstants.BUCKET / 81) * 16, true, 16, 50);
-    }
+//    private void assignFluidStackRenderer() {
+//        fluidStackRenderer = new FluidStackRenderer((FluidConstants.BUCKET / 81) * 16, true, 16, 50);
+//    }
 
     private void assignEnergyInfoArea() {
         energyInfoArea = new EnergyInfoArea(((width - backgroundWidth) / 2) + 156,
@@ -59,12 +59,12 @@ public class BasicAmmoniaExtractorScreen extends HandledScreen<BasicAmmoniaExtra
         }
     }
 
-    private void renderFluidTooltip(DrawContext context, int mouseX, int mouseY, int x, int y, int offsetX, int offsetY, FluidStackRenderer renderer) {
-        if(isMouseAboveArea(mouseX, mouseY, x, y, offsetX, offsetY, renderer)) {
-            context.drawTooltip(Screens.getTextRenderer(this), renderer.getTooltip(handler.blockEntity.fluidStorage, Item.TooltipContext.DEFAULT),
-                    Optional.empty(), mouseX - x, mouseY - y);
-        }
-    }
+//    private void renderFluidTooltip(DrawContext context, int mouseX, int mouseY, int x, int y, int offsetX, int offsetY, FluidStackRenderer renderer) {
+//        if(isMouseAboveArea(mouseX, mouseY, x, y, offsetX, offsetY, renderer)) {
+//            context.drawTooltip(Screens.getTextRenderer(this), renderer.getTooltip(handler.blockEntity.fluidStorage, Item.TooltipContext.DEFAULT),
+//                    Optional.empty(), mouseX - x, mouseY - y);
+//        }
+//    }
 
     @Override
     protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
@@ -72,7 +72,7 @@ public class BasicAmmoniaExtractorScreen extends HandledScreen<BasicAmmoniaExtra
         int y = (height - backgroundHeight) / 2;
 
         renderEnergyAreaTooltips(context, mouseX, mouseY, x, y);
-        renderFluidTooltip(context, mouseX, mouseY, x, y, 8, 7, fluidStackRenderer);
+//        renderFluidTooltip(context, mouseX, mouseY, x, y, 8, 7, fluidStackRenderer);
     }
 
     @Override
@@ -86,8 +86,8 @@ public class BasicAmmoniaExtractorScreen extends HandledScreen<BasicAmmoniaExtra
         context.drawTexture(GUI_TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
         energyInfoArea.draw(context);
-        fluidStackRenderer.drawFluid(context, handler.blockEntity.fluidStorage, x + 8, y + 7, 16, 50,
-                (FluidConstants.BUCKET / 81) * 16);
+//        fluidStackRenderer.drawFluid(context, handler.blockEntity.fluidStorage, x + 8, y + 7, 16, 50,
+//                (FluidConstants.BUCKET / 81) * 16);
 
         renderProgressArrow(context, x, y);
         renderProgressExtractor(context, x, y);

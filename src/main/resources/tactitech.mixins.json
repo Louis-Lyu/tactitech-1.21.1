@@ -1,11 +1,16 @@
 {
-	"required": true,
-	"package": "net.lemoon.tactitech.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"ExampleMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "package": "net.lemoon.tactitech.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ExampleMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "impl.BakedQuadAccessor",
+    "impl.BufferBuilderAccessor",
+    "impl.RenderLayerAccessor"
+  ]
 }
