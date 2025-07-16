@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.lemoon.tactitech.block.ModBlocks;
 import net.lemoon.tactitech.block.custom.BasicAmmoniaExtractor;
 import net.lemoon.tactitech.block.entity.ImplementedInventory;
 import net.lemoon.tactitech.block.entity.ModBlockEntities;
@@ -302,29 +303,34 @@ public class BasicAmmoniaExtractorEntity extends BlockEntity implements Extended
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
-        if(world.isClient()) {
+        if (world.isClient()) {
             return;
         }
-
-        if(hasRecipe() && canInsertIntoOutputSlot()) {
-            increaseCraftingProgress();
-            useEnergyForCrafting();
-            world.setBlockState(pos, state.with(BasicAmmoniaExtractor.LIT, true));
-            markDirty(world, pos, state);
-
-            if(hasCraftingFinished()) {
-                craftItem();
-//                useFluidForCrafting();
-                resetProgress();
+        if (!world.isClient) {
+            if (world.getBlockState(pos.down()).getBlock() != ModBlocks.SOLIDIFIED_AMMONIA) {
+                // Check if the block below is the ammonia core
+                // Break the extractor block if not placed on the ammonia core
             }
-        } else {
-            world.setBlockState(pos, state.with(BasicAmmoniaExtractor.LIT, false));
-            resetProgress();
+                // Implement your logic for producing ammonia dust here
+                else if (hasRecipe() && canInsertIntoOutputSlot()) {
+                    increaseCraftingProgress();
+                    useEnergyForCrafting();
+                    world.setBlockState(pos, state.with(BasicAmmoniaExtractor.LIT, true));
+                    markDirty(world, pos, state);
+
+                    if (hasCraftingFinished()) {
+                        craftItem();
+//                useFluidForCrafting();
+                        resetProgress();
+                    }
+                } else {
+                    world.setBlockState(pos, state.with(BasicAmmoniaExtractor.LIT, false));
+                    resetProgress();
+                }
+
         }
 
-//        if(hasBucketInFluidSlot()) {
-//            fillFluidTank();
-//        }
+
     }
 
     private void fillFluidTank() {
@@ -379,7 +385,7 @@ public class BasicAmmoniaExtractorEntity extends BlockEntity implements Extended
     private void craftItem() {
         Optional<RecipeEntry<BasicAmmoniaExtractorRecipe>> recipe = getCurrentRecipe();
 
-        this.removeStack(INPUT_SLOT, 1);
+        //this.removeStack(INPUT_SLOT, 1);
         this.setStack(OUTPUT_SLOT, new ItemStack(recipe.get().value().output().getItem(),
                 this.getStack(OUTPUT_SLOT).getCount() + recipe.get().value().output().getCount()));
     }

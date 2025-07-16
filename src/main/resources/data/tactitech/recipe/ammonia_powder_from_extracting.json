@@ -1,7 +1,7 @@
 {
   "type": "tactitech:extracting",
   "ingredient": {
-    "item": "minecraft:glowstone_dust"
+    "item": "tactitech:solidified_ammonia"
   },
   "result": {
     "id": "tactitech:solidified_ammonia"

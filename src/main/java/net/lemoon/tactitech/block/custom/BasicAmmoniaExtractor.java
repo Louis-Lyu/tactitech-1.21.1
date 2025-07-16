@@ -1,6 +1,7 @@
 package net.lemoon.tactitech.block.custom;
 
 import com.mojang.serialization.MapCodec;
+import net.lemoon.tactitech.block.ModBlocks;
 import net.lemoon.tactitech.block.entity.ModBlockEntities;
 import net.lemoon.tactitech.block.entity.custom.BasicAmmoniaExtractorEntity;
 import net.minecraft.block.Block;
@@ -34,6 +35,7 @@ public class BasicAmmoniaExtractor extends BlockWithEntity {
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = Properties.LIT;
     public static final MapCodec<BasicAmmoniaExtractor> CODEC = createCodec(BasicAmmoniaExtractor::new);
+    //public static boolean IsOnCore = false;
 
     public BasicAmmoniaExtractor(Settings settings) {
         super(settings);
@@ -43,6 +45,7 @@ public class BasicAmmoniaExtractor extends BlockWithEntity {
     protected MapCodec<? extends BlockWithEntity> getCodec() {
         return CODEC;
     }
+
 
     /* FACING */
 
@@ -90,6 +93,23 @@ public class BasicAmmoniaExtractor extends BlockWithEntity {
             super.onStateReplaced(state, world, pos, newState, moved);
         }
     }
+
+//    @Override
+//    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+//        super.onBlockAdded(state, world, pos, oldState, notify);
+//
+//        if (!world.isClient) {
+//            if (world.getBlockState(pos.down()).getBlock() != ModBlocks.SOLIDIFIED_AMMONIA) {
+//                IsOnCore = false;
+//                // Check if the block below is the ammonia core
+//               // world.breakBlock(pos, true);// Break the extractor block if not placed on the ammonia core
+//
+//            }
+//            else{
+//                IsOnCore = true;
+//            }
+//        }
+//    }
 
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {

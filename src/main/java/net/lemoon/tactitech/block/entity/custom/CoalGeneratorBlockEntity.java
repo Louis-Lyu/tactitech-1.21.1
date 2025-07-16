@@ -140,6 +140,11 @@ public class CoalGeneratorBlockEntity extends BlockEntity implements ExtendedScr
 
     private void pushEnergyToAboveNeighbour() {
         EnergyStorageUtil.move(this.energyStorage, EnergyStorage.SIDED.find(world, pos.up(), null), Long.MAX_VALUE, null);
+        EnergyStorageUtil.move(this.energyStorage, EnergyStorage.SIDED.find(world, pos.down(), null), Long.MAX_VALUE, null);
+        EnergyStorageUtil.move(this.energyStorage, EnergyStorage.SIDED.find(world, pos.north(), null), Long.MAX_VALUE, null);
+        EnergyStorageUtil.move(this.energyStorage, EnergyStorage.SIDED.find(world, pos.south(), null), Long.MAX_VALUE, null);
+        EnergyStorageUtil.move(this.energyStorage, EnergyStorage.SIDED.find(world, pos.east(), null), Long.MAX_VALUE, null);
+        EnergyStorageUtil.move(this.energyStorage, EnergyStorage.SIDED.find(world, pos.west(), null), Long.MAX_VALUE, null);
     }
 
     private void fillUpOnEnergy() {

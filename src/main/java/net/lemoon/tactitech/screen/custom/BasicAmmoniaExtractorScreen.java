@@ -62,7 +62,9 @@ public class BasicAmmoniaExtractorScreen extends HandledScreen<BasicAmmoniaExtra
 //    private void renderFluidTooltip(DrawContext context, int mouseX, int mouseY, int x, int y, int offsetX, int offsetY, FluidStackRenderer renderer) {
 //        if(isMouseAboveArea(mouseX, mouseY, x, y, offsetX, offsetY, renderer)) {
 //            context.drawTooltip(Screens.getTextRenderer(this), renderer.getTooltip(handler.blockEntity.fluidStorage, Item.TooltipContext.DEFAULT),
-//                    Optional.empty(), mouseX - x, mouseY - y);
+//                    Optional.empty()
+//
+//                    , mouseX - x, mouseY - y);
 //        }
 //    }
 
