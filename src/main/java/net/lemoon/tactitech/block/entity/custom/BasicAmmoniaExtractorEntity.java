@@ -410,8 +410,8 @@ public class BasicAmmoniaExtractorEntity extends BlockEntity implements Extended
         }
 
         ItemStack output = recipe.get().value().getResult(null);
-        return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
-//                && hasEnoughEnergyToCraft() && hasEnoughFluidToCraft();
+        return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output) && hasEnoughEnergyToCraft();
+//                && hasEnoughFluidToCraft();
     }
 
 //    private boolean hasEnoughFluidToCraft() {

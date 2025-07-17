@@ -10,6 +10,8 @@ base {
 	archivesName = project.archives_base_name
 }
 
+
+
 repositories {
 
 	maven{
@@ -24,7 +26,10 @@ repositories {
 	}
 
 	mavenLocal() {
-		maven { name = "BuildCraft"; url = "https://mod-buildcraft.com/maven" }
+		maven {
+			name = "BuildCraft"
+			url = "https://mod-buildcraft.com/maven"
+		}
 	}
 	// Replace with your Maven repository URL
 
@@ -83,6 +88,7 @@ processResources {
 	filesMatching("fabric.mod.json") {
 		expand "version": inputs.properties.version
 	}
+	doNotTrackState("Untrack this task for state tracking")
 }
 
 tasks.withType(JavaCompile).configureEach {
