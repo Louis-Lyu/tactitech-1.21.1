@@ -1,21 +1,23 @@
 package net.lemoon.tactitech.block.custom;
 
 import com.mojang.serialization.MapCodec;
+import dev.mayaqq.nexusframe.api.multiblock.Multiblock;
+import net.lemoon.tactitech.Tactitech;
 import net.lemoon.tactitech.block.ModBlocks;
 import net.lemoon.tactitech.block.entity.ModBlockEntities;
 import net.lemoon.tactitech.block.entity.custom.BasicAmmoniaExtractorEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
+//import net.lemoon.tactitech.mixin.ExtractorBlockMixin;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.predicate.block.BlockStatePredicate;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -30,12 +32,17 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.HashMap;
+import java.util.function.Predicate;
 
 public class BasicAmmoniaExtractor extends BlockWithEntity {
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = Properties.LIT;
     public static final MapCodec<BasicAmmoniaExtractor> CODEC = createCodec(BasicAmmoniaExtractor::new);
-    //public static boolean IsOnCore = false;
+    public boolean IsMultiBlockNotAssembled = false;
 
     public BasicAmmoniaExtractor(Settings settings) {
         super(settings);
@@ -45,7 +52,6 @@ public class BasicAmmoniaExtractor extends BlockWithEntity {
     protected MapCodec<? extends BlockWithEntity> getCodec() {
         return CODEC;
     }
-
 
     /* FACING */
 
@@ -94,35 +100,100 @@ public class BasicAmmoniaExtractor extends BlockWithEntity {
         }
     }
 
-//    @Override
-//    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-//        super.onBlockAdded(state, world, pos, oldState, notify);
-//
-//        if (!world.isClient) {
-//            if (world.getBlockState(pos.down()).getBlock() != ModBlocks.SOLIDIFIED_AMMONIA) {
-//                IsOnCore = false;
-//                // Check if the block below is the ammonia core
-//               // world.breakBlock(pos, true);// Break the extractor block if not placed on the ammonia core
-//
-//            }
-//            else{
-//                IsOnCore = true;
-//            }
-//        }
-//    }
+    @Unique
+    private static final HashMap<BlockPos, Multiblock> Multiblocks = new HashMap<>();
 
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient) {
-            NamedScreenHandlerFactory screenHandlerFactory = ((BasicAmmoniaExtractorEntity) world.getBlockEntity(pos));
 
-            if (screenHandlerFactory != null) {
-                player.openHandledScreen(screenHandlerFactory);
+
+        if (world.isClient){
+            return (ItemActionResult.SUCCESS);
+        }else {
+            getForgeMultiblock(pos);
+            Multiblock structure = Multiblocks.get(pos);
+            if (structure.check(pos, world)) {
+                Tactitech.LOGGER.info("Structure matched!");
+                IsMultiBlockNotAssembled = false;
+
+            } else {
+                Tactitech.LOGGER.info("Structure didn't match!");
+                IsMultiBlockNotAssembled = true;
             }
         }
+        if (!world.isClient) {
+            if(!IsMultiBlockNotAssembled) {
+                NamedScreenHandlerFactory screenHandlerFactory = ((BasicAmmoniaExtractorEntity) world.getBlockEntity(pos));
+
+                if (screenHandlerFactory != null) {
+                    player.openHandledScreen(screenHandlerFactory);
+                }
+            }
+
+        }
+
+
 
         return ItemActionResult.SUCCESS;
     }
+
+//    multibock test
+//
+//    private void onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ItemActionResult> cir) {
+//        if (world.isClient) {
+//            cir.setReturnValue(ItemActionResult.SUCCESS);
+//        } else {
+//            getForgeMultiblock(pos);
+//            Multiblock structure = Multiblocks.get(pos);
+//            if (structure.check(pos, world)) {
+//                Tactitech.LOGGER.info("Structure matched!");
+//                skibidi=true;
+//            } else {
+//                Tactitech.LOGGER.info("Structure didn't match!");
+//            }
+//        }
+//    }
+    @Unique
+    private static void getForgeMultiblock(BlockPos pos) {
+        if (Multiblocks.get(pos) == null) {
+            Multiblocks.put(pos, new Multiblock(multiblock(), getPredicates(), true));
+        }
+    }
+
+    @Unique
+    private static char[][][] multiblock() {
+        return new char[][][]{
+                {
+                        {'g', 'l', 'g'},
+                        {'l', 'g', 'l'},
+                        {'g', 'l', 'g'}
+                },
+                {
+                        {'a', 'g', 'a'},
+                        {'g', '$', 'g'},
+                        {'a', 'g', 'a'}
+                },
+                {
+                        {'a', 't', 'a'},
+                        {'t', 'a', 't'},
+                        {'a', 't', 'a'}
+                }
+        };
+    }
+
+    @Unique
+    private static HashMap<Character, Predicate<BlockState>> getPredicates() {
+        HashMap<Character, Predicate<BlockState>> predicates = new HashMap<>();
+//        Block yourCustomBlock = ModBlocks.BASIC_AMMONIA_EXTRACTOR;
+        predicates.put('a', BlockStatePredicate.ANY);
+        predicates.put('$', BlockStatePredicate.forBlock(ModBlocks.BASIC_AMMONIA_EXTRACTOR));
+        predicates.put('g', BlockStatePredicate.forBlock(Blocks.GILDED_BLACKSTONE));
+        predicates.put('l', BlockStatePredicate.forBlock(ModBlocks.SOLIDIFIED_AMMONIA));
+        predicates.put('t', BlockStatePredicate.forBlock(Blocks.GLASS));
+        return predicates;
+    }
+
+
 
     @Nullable
     @Override
@@ -159,5 +230,6 @@ public class BasicAmmoniaExtractor extends BlockWithEntity {
             world.addParticle(new ItemStackParticleEffect(ParticleTypes.ITEM, basicAmmoniaExtractorEntity.getStack(1)),
                     xPos + xOffsets, yPos + yOffset, zPos + zOffset, 0.0, 0.0, 0.0);
         }
+
     }
 }

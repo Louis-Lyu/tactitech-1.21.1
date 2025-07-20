@@ -1,26 +1,25 @@
 package net.lemoon.tactitech.block.entity.custom;
 
-import dev.architectury.fluid.FluidStack;
+import dev.mayaqq.nexusframe.api.multiblock.Multiblock;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleVariantStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.lemoon.tactitech.Tactitech;
 import net.lemoon.tactitech.block.ModBlocks;
 import net.lemoon.tactitech.block.custom.BasicAmmoniaExtractor;
 import net.lemoon.tactitech.block.entity.ImplementedInventory;
 import net.lemoon.tactitech.block.entity.ModBlockEntities;
-import net.lemoon.tactitech.item.ModItems;
 import net.lemoon.tactitech.recipe.BasicAmmoniaExtractorRecipe;
 import net.lemoon.tactitech.recipe.BasicAmmoniaExtractorRecipeInput;
 import net.lemoon.tactitech.recipe.ModRecipes;
 import net.lemoon.tactitech.screen.custom.BasicAmmoniaExtractorScreenHandler;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.FlowableFluid;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
@@ -29,30 +28,35 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.predicate.block.BlockStatePredicate;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
+import java.util.HashMap;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class BasicAmmoniaExtractorEntity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, ImplementedInventory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
 
-
-    //private static final int FLUID_ITEM_SLOT = 0;
+    //input output creation
     private static final int INPUT_SLOT = 1;
     private static final int OUTPUT_SLOT = 2;
     private static final int ENERGY_ITEM_SLOT = 3;
-   // private static final int FLUID_SLOT = 4;
 
     protected final PropertyDelegate propertyDelegate;
     private int progress = 0;
@@ -62,6 +66,8 @@ public class BasicAmmoniaExtractorEntity extends BlockEntity implements Extended
     private static final int ENERGY_CRAFTING_AMOUNT = 25;
 
     private static final int ENERGY_TRANSFER_AMOUNT = 160;
+
+    //energy storage
     public final SimpleEnergyStorage energyStorage = new SimpleEnergyStorage(64000, ENERGY_TRANSFER_AMOUNT, ENERGY_TRANSFER_AMOUNT) {
         @Override
         protected void onFinalCommit() {
@@ -70,6 +76,8 @@ public class BasicAmmoniaExtractorEntity extends BlockEntity implements Extended
         }
     };
 
+
+    //unused fluid storage
     public final SingleVariantStorage<FluidVariant> fluidStorage = new SingleVariantStorage<FluidVariant>() {
         @Override
         protected FluidVariant getBlankVariant() {
@@ -88,6 +96,7 @@ public class BasicAmmoniaExtractorEntity extends BlockEntity implements Extended
         }
     };
 
+    //progress indicator
     public BasicAmmoniaExtractorEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.EXTRACTOR_BE, pos, state);
         this.propertyDelegate = new PropertyDelegate() {
@@ -114,6 +123,8 @@ public class BasicAmmoniaExtractorEntity extends BlockEntity implements Extended
             }
         };
     }
+
+    //insert logic for pipes
 
     @Override
     public boolean canInsert(int slot, ItemStack stack, @Nullable Direction side) {
@@ -151,6 +162,8 @@ public class BasicAmmoniaExtractorEntity extends BlockEntity implements Extended
         };
     }
 
+
+    //extract logic for pipes
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction side) {
         Direction localDir = this.getWorld().getBlockState(this.pos).get(BasicAmmoniaExtractor.FACING);
@@ -182,85 +195,8 @@ public class BasicAmmoniaExtractorEntity extends BlockEntity implements Extended
                     side.rotateYClockwise() == Direction.EAST && slot == OUTPUT_SLOT;
         };
     }
-//    public boolean canInsertFluid(int slot, FluidStack stack, @Nullable Direction side) {
-//        Direction localDir = this.getWorld().getBlockState(pos).get(BasicAmmoniaExtractor.FACING);
-//
-////        if (side == Direction.NORTH) {
-////            return slot == FLUID_ITEM_SLOT; // Example condition for inserting water fluid
-////        }
-//
-//        if(side == Direction.WEST) {
-//            return slot == FLUID_SLOT;
-//        }
-//
-//        if(side == Direction.EAST) {
-//            return slot == FLUID_SLOT;
-//        }
-//
-//        if (side == Direction.DOWN) {
-//             return  slot == FLUID_SLOT;
-//        }
-//
-//        if (side == Direction.UP) {
-//            return  slot == FLUID_SLOT;
-//        }
-//
-//        return switch (localDir) {
-//            default -> //NORTH
-//                    side == Direction.NORTH && slot == FLUID_SLOT ||
-//                            side == Direction.EAST && slot == FLUID_SLOT ||
-//                            side == Direction.WEST && slot == FLUID_SLOT;
-//            case EAST ->
-//                    side.rotateYCounterclockwise() == Direction.NORTH && slot == FLUID_SLOT ||
-//                            side.rotateYCounterclockwise() == Direction.EAST && slot == FLUID_SLOT ||
-//                            side.rotateYCounterclockwise() == Direction.WEST && slot == FLUID_SLOT;
-//            case SOUTH ->
-//                    side.getOpposite() == Direction.NORTH && slot == FLUID_SLOT ||
-//                            side.getOpposite()  == Direction.EAST && slot == FLUID_SLOT ||
-//                            side.getOpposite()  == Direction.WEST && slot == FLUID_SLOT;
-//            case WEST ->
-//                    side.rotateYClockwise() == Direction.NORTH && slot == FLUID_SLOT ||
-//                            side.rotateYClockwise() == Direction.EAST && slot == FLUID_SLOT ||
-//                            side.rotateYClockwise() == Direction.WEST && slot == FLUID_SLOT;
-//        };
-//    }
-//
-//
-//    public boolean canInsertFluid(int slot, FluidStack stack, @Nullable Direction side) {
-//        Direction localDir = this.getWorld().getBlockState(pos).get(BasicAmmoniaExtractor.FACING);
-//
-//        if(side == Direction.NORTH) {
-//            return slot == INPUT_SLOT;
-//        }
-//
-//        if(side == Direction.DOWN) {
-//            return false;
-//        }
-//
-//        if(side == Direction.UP) {
-//            return false;
-//        }
-//
-//        return switch (localDir) {
-//            default -> //NORTH
-//                    side == Direction.NORTH && slot == INPUT_SLOT ||
-//                            side == Direction.EAST && slot == INPUT_SLOT ||
-//                            side == Direction.WEST && slot == INPUT_SLOT;
-//            case EAST ->
-//                    side.rotateYCounterclockwise() == Direction.NORTH && slot == INPUT_SLOT ||
-//                            side.rotateYCounterclockwise() == Direction.EAST && slot == INPUT_SLOT ||
-//                            side.rotateYCounterclockwise() == Direction.WEST && slot == INPUT_SLOT;
-//            case SOUTH ->
-//                    side.getOpposite() == Direction.NORTH && slot == INPUT_SLOT ||
-//                            side.getOpposite()  == Direction.EAST && slot == INPUT_SLOT ||
-//                            side.getOpposite()  == Direction.WEST && slot == INPUT_SLOT;
-//            case WEST ->
-//                    side.rotateYClockwise() == Direction.NORTH && slot == INPUT_SLOT ||
-//                            side.rotateYClockwise() == Direction.EAST && slot == INPUT_SLOT ||
-//                            side.rotateYClockwise() == Direction.WEST && slot == INPUT_SLOT;
-//        };
-//    }
 
+// visual stuff
     @Override
     public BlockPos getScreenOpeningData(ServerPlayerEntity player) {
         return this.pos;
@@ -329,10 +265,13 @@ public class BasicAmmoniaExtractorEntity extends BlockEntity implements Extended
                 }
 
         }
+        //multiblock testing
+
 
 
     }
 
+    //unused fluid filling
     private void fillFluidTank() {
         if(inventory.get(0).isOf(Items.LAVA_BUCKET) && (fluidStorage.variant.isOf(Fluids.LAVA) || fluidStorage.isResourceBlank())) {
             try(Transaction transaction = Transaction.openOuter()) {
@@ -355,20 +294,6 @@ public class BasicAmmoniaExtractorEntity extends BlockEntity implements Extended
         }
     }
 
-//    private boolean hasBucketInFluidSlot() {
-//        return inventory.get(FLUID_ITEM_SLOT).isOf(Items.LAVA_BUCKET) || inventory.get(FLUID_ITEM_SLOT).isOf(Items.WATER_BUCKET);
-//
-//    }
-
-//    private boolean hasFluid() {
-//    };
-
-//    private void useFluidForCrafting() {
-//        try(Transaction transaction = Transaction.openOuter()){
-//            this.fluidStorage.extract(this.fluidStorage.variant, 1000,  transaction);
-//            transaction.commit();
-//        }
-//    }
 
     private void useEnergyForCrafting() {
         try(Transaction transaction = Transaction.openOuter()) {

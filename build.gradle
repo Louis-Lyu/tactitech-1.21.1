@@ -17,6 +17,12 @@ repositories {
 	maven{
 		url "https://maven.fabricmc.net/fabric-loom/fabric-loom.gradle.plugin/1.10-SNAPSHOT/"
 	}
+//	mavenLocal()
+	maven { url 'https://maven.nucleoid.xyz' } //Polymer
+	maven {
+		name "gayMavenReleases"
+		url = uri("https://maven.is-immensely.gay/releases")
+	}
 	maven { url "https://maven.shedaniel.me" }
 	maven {
 		url "https://cursemaven.com"
@@ -51,6 +57,7 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "dev.mayaqq:NexusFrame:2.0.0+1.21"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
